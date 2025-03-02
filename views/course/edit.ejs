@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+    <form action="/courses/<%= course[0].course_id %>" method="post">
+        <label for="course_id">Course_id</label>
+        <input type="text" name="course_id" value="<%= course[0].course_id %>" readonly><br>
+        <label for="course_name">course_name</label>
+        <input type="text" name="course_name" value="<%= course[0].course_name %>"><br>
+        <label for="credits">credits</label>
+        <input type="text" name="credits" value="<%= course[0].credits %>"><br>
+        <label for="branch">Banch</label>
+        <input type="text" name="branch" value="<%= course[0].branch %>"><br>
+        <button type="submit">submit</button>
+    </form>
+    <%- include('../partials/footer') %>

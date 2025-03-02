@@ -1,0 +1,9 @@
+<%- include('../partials/header') %>
+    <form action="/courses" method="post">
+        <input type="text" placeholder="course_id" name="course_id">
+        <input type="text" placeholder="course_name" name="course_name">
+        <input type="number" placeholder="credits" name="credits">
+        <input type="text" placeholder="branch" name="branch">
+        <button type="submit">Add</button>
+    </form>
+    <%- include('../partials/footer') %>

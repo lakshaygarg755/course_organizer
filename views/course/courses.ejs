@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+  
+  <a href="/courses/add">Add courses</a>
+  <br><br>
+
+<table class="table table-striped">
+  <th scope="col">Name</th>
+  <th scope="col">ID</th>
+  <th scope="col">View</th>
+  <th scope="col">Edit</th>
+  <th scope="col">Delete</th>
+  <% courses.forEach(function (course) { %>
+    <tr>
+
+      <td><%= course.course_name %></td>
+      <td><%= course.course_id %></td>
+      <td><a href="/courses/<%= course.course_id%>">View</a></td>
+      <td><a href="/courses/<%= course.course_id%>/edit">Edit</a></td>
+      <td><a href="/courses/<%= course.course_id%>/delete" target="_parent">delete</a></td>
+    </tr>
+    <% }); %>
+    
+</table>
+
+
+
+<%- include('../partials/footer') %>
