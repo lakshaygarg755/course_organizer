@@ -1,11 +1,29 @@
 <%- include('../partials/header') %>
-    <% course.forEach((item)=> {%>
-        <ul>
-         <li><%=item.course_id %></li>
-        <li><%=item.course_name %></li>
-        <li><%=item.credits %></li>
-        <li><%=item.branch %></li>
-        <li><a href="/courses/<%= item.course_id%>/edit">Edit</a></li>
-        </ul>
-    <%})%>
-    <%- include('../partials/footer') %>
+<h1><%= course.course_name %></h1>
+<p>Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
+
+<h2>Lectures</h2>
+
+<% if (course.lectures && course.lectures.length > 0) { %>
+  <ul>
+    <% course.lectures.forEach(lecture => { %>
+      <li>
+        <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>"><%= lecture.title %></a>
+        <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>/delete">[Delete]</a>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No lectures available for this course.</p>
+<% } %>
+
+
+<h2>Add Lecture</h2>
+<form action="/courses/<%= course.course_id %>/lectures" method="POST" enctype="multipart/form-data">
+  <input type="text" name="title" placeholder="Lecture Title" required>
+  <input type="text" name="description" placeholder="Lecture Description">
+  <input type="text" name="video_url" placeholder="Lecture Video URL">
+  <input type="file" name="pdf" accept="application/pdf">
+  <button type="submit">Add Lecture</button>
+</form>
+<%- include('../partials/footer') %>

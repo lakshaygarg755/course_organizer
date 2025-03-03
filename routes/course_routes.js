@@ -17,20 +17,28 @@ app.post('/courses', async (req,res)=>{
         "branch":req.body.branch,
     })
     await data.save();
-    res.redirect('course/courses');
+    res.redirect('/courses');
 });
 
 app.get('/courses/add', (req,res)=>{
     res.render('course/add');
 })
 
-app.get('/courses/:course_id', async (req,res) => {
-    let course = await Courses.findOne({course_id: req.params.course_id});
-    course = [course];
-    res.render('course/view',{
-        course : course,
-    })
+app.get('/courses/:course_id', async (req, res) => {
+    let course = await Courses.findOne({ course_id: req.params.course_id }).lean();
+
+    if (!course) {
+        return res.status(404).send("Course not found");
+    }
+
+    // Ensure lectures exists and is an array
+    if (!course.lectures) {
+        course.lectures = [];
+    }
+
+    res.render('course/view', { course });
 });
+
 
 app.post('/courses/:course_id', async (req,res) => {
       await Courses.updateOne({"course_id" : req.params.course_id} , {
