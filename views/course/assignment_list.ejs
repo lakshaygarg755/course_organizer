@@ -1,0 +1,25 @@
+<%- include('../partials/header') %>
+
+<h1><%= course.course_name %></h1>
+<p>Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
+
+<h2>Assignments</h2>
+<% if (course.assignments && course.assignments.length > 0) { %>
+  <ul>
+    <% course.assignments.forEach(assignment => { %>
+      <li>
+        <strong><%= assignment.title %></strong> - <%= assignment.description %>
+        <% if (assignment.pdf_url) { %>
+          <a href="<%= assignment.pdf_url %>" target="_blank">[Download]</a>
+        <% } %>
+        <a href="/courses/<%= course.course_id %>/assignments/<%= assignment._id %>/delete">[Delete]</a>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>No assignments available for this course.</p>
+<% } %>
+
+<a href="/courses/<%= course.course_id %>">Back to Course</a>
+
+<%- include('../partials/footer') %>
