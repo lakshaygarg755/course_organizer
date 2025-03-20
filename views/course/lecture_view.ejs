@@ -1,20 +1,14 @@
 <%- include('../partials/header') %>
-<h1>Lecture: <%= lecture.title %></h1>
-<p><%= lecture.description %></p>
+<h1><%= course.course_name %></h1>
+<p>Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
 
-<iframe width="560" height="315" src="<%= lecture.video_url %>" frameborder="0" allowfullscreen></iframe>
+<h2>Lecture Details</h2>
+<p><strong>Title:</strong> <%= lecture.title %></p>
+<p><strong>Description:</strong> <%= lecture.description %></p>
 
 <% if (lecture.pdf_url) { %>
-  <h3>Lecture Notes</h3>
-  <a href="<%= lecture.pdf_url %>" target="_blank">Download PDF</a>
+  <p><strong>PDF:</strong> <a href="<%= lecture.pdf_url %>" target="_blank">Download PDF</a></p>
 <% } %>
 
-<h2>Edit Lecture</h2>
-<form action="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>" method="POST" enctype="multipart/form-data">
-  <input type="text" name="title" value="<%= lecture.title %>" required>
-  <input type="text" name="description" value="<%= lecture.description %>">
-  <input type="text" name="video_url" value="<%= lecture.video_url %>">
-  <input type="file" name="pdf" accept="application/pdf">
-  <button type="submit">Save</button>
-</form>
+<a href="/courses/<%= course.course_id %>">Back to Course</a>
 <%- include('../partials/footer') %>

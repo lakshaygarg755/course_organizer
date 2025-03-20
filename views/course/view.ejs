@@ -17,12 +17,10 @@
   <p>No lectures available for this course.</p>
 <% } %>
 
-
 <h2>Add Lecture</h2>
 <form action="/courses/<%= course.course_id %>/lectures" method="POST" enctype="multipart/form-data">
   <input type="text" name="title" placeholder="Lecture Title" required>
   <input type="text" name="description" placeholder="Lecture Description">
-  <input type="text" name="video_url" placeholder="Lecture Video URL">
   <input type="file" name="pdf" accept="application/pdf">
   <button type="submit">Add Lecture</button>
 </form>

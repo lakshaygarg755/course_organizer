@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 let lectureSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String },
-    pdf_url: { type: String } // Stores the file path of uploaded PDFs
+    pdf_url: { type: String }
 });
 
 let courseSchema = new mongoose.Schema({

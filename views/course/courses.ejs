@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
-  
-  <a href="/courses/add">Add courses</a>
+
+  <a href="/courses/add" class="btn btn-primary">Add courses</a>
   <br><br>
 
 <table class="table table-striped">
@@ -22,6 +22,21 @@
     
 </table>
 
+<body data-flag="<%= flag %>" data-c_id = "<%= courses[courses.length-1].course_id %>">
+<script>
+  function course_add_alert(){
+    let flag = document.body.dataset.flag;
+    let c_id = document.body.dataset.c_id;
+    console.log(c_id);
+    if(flag == 1){
+      window.alert("New course " + c_id + " added");
+    }
+    
+  }
+  window.onload = function(){
 
+    course_add_alert();
+  }
+</script>
 
 <%- include('../partials/footer') %>

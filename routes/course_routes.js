@@ -2,11 +2,14 @@ const express = require('express');
 const Courses = require('../models/course');
 const app = express.Router();
 
+let course_add_flag = 0;
 app.get('/courses', async (req,res)=>{
     let data = await Courses.find().lean();
     res.render('course/courses',{
         courses:data,
+        flag : course_add_flag,
     });
+    course_add_flag = 0;
 })
 
 app.post('/courses', async (req,res)=>{
@@ -17,6 +20,7 @@ app.post('/courses', async (req,res)=>{
         "branch":req.body.branch,
     })
     await data.save();
+    course_add_flag = 1;
     res.redirect('/courses');
 });
 
@@ -47,9 +51,8 @@ app.post('/courses/:course_id', async (req,res) => {
          "branch" : req.body.branch
         })
         let data = await Courses.findOne({course_id: req.params.course_id});
-        res.render('course/view',{
-            course : [data],
-        })
+        let url = "/courses/" + req.params.course_id;
+        res.redirect(url);
 });
 
 app.get('/courses/:course_id/edit', async (req,res)=> {
