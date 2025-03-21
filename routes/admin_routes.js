@@ -8,11 +8,10 @@ const app = express.Router();
 app.get("/admin/users", isAdmin, async (req, res) => {
     try {
         const users = await User.find({});
-        res.render("admin_users", { users, message: req.flash("success"), error: req.flash("error") });
+        res.render("admin_users", { users, message: null, error: null });
     } catch (err) {
         console.error(err);
-        req.flash("error", "Something went wrong!");
-        res.redirect("/admin");
+        res.send("Something went wrong!");
     }
 });
 
@@ -21,23 +20,19 @@ app.post("/admin/make-admin/:id", isAdmin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
-            req.flash("error", "User not found.");
-            return res.redirect("/admin/users");
+            return res.send("User not found.");
         }
 
         if (user.role === "admin") {
-            req.flash("error", "User is already an admin.");
-            return res.redirect("/admin/users");
+            return res.send("User is already an admin.");
         }
 
         user.role = "admin";
         await user.save();
-        req.flash("success", `${user.username} is now an admin.`);
-        res.redirect("/admin/users");
+        res.send(`${user.username} is now an admin.`);
     } catch (err) {
         console.error(err);
-        req.flash("error", "Server error occurred.");
-        res.redirect("/admin/users");
+        res.send("Server error occurred.");
     }
 });
 
@@ -47,29 +42,25 @@ app.post("/admin/delete-admin/:id", isAdmin, async (req, res) => {
         const adminCount = await User.countDocuments({ role: "admin" });
 
         if (adminCount <= 1) {
-            req.flash("error", "At least one admin must remain!");
-            return res.redirect("/admin/users");
+            return res.send("At least one admin must remain!");
         }
 
         const user = await User.findById(req.params.id);
         if (!user) {
-            req.flash("error", "User not found.");
-            return res.redirect("/admin/users");
+            return res.send("User not found.");
         }
 
         await User.findByIdAndDelete(req.params.id);
-        req.flash("success", "Admin deleted successfully.");
-        res.redirect("/admin/users");
+        res.send("Admin deleted successfully.");
     } catch (err) {
         console.error(err);
-        req.flash("error", "Server error occurred.");
-        res.redirect("/admin/users");
+        res.send("Server error occurred.");
     }
 });
 
 // Admin Dashboard Route
 app.get("/admin", isAdmin, (req, res) => {
-    res.render("admin_dashboard", { user: req.user, message: req.flash("success"), error: req.flash("error") });
+    res.render("admin_dashboard", { user: req.user, message: null, error: null });
 });
 
 module.exports = app;

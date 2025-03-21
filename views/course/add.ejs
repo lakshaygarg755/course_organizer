@@ -27,6 +27,22 @@
                     <input type="text" class="form-control" id="branch" name="branch" placeholder="Enter Branch" required>
                 </div>
 
+                <div class="mb-3">
+                    <label for="professorEmail" class="form-label">Select Professor</label>
+                    <select class="form-select" id="professorEmail" name="professorEmail" required>
+                        <% if (professors && professors.length > 0) { %>
+                            <% professors.forEach(professor => { %>
+                                <option value="<%= professor.email %>">
+                                    <%= professor.name %> (<%= professor.email %>)
+                                </option>
+                            <% }); %>
+                        <% } else { %>
+                            <option disabled>No professors available</option>
+                        <% } %>
+                    </select>
+
+                </div>
+
                 <button type="submit" class="btn btn-success w-100">Add Course</button>
             </form>
         </div>

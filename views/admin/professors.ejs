@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Manage Professors</h3>
+        </div>
+        <div class="card-body">
+            <!-- Form to Add a New Professor -->
+            <form action="/admin/professors" method="POST" class="mb-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Professor Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Add Professor</button>
+            </form>
+            
+            <!-- List of Professors -->
+            <h4 class="mt-4">Existing Professors</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (professors.length > 0) { %>
+                        <% professors.forEach(professor => { %>
+                            <tr>
+                                <td><%= professor.name %></td>
+                                <td><%= professor.email %></td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="2" class="text-center">No professors found.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

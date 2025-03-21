@@ -2,9 +2,15 @@
 
 <div class="container mt-4">
   <h1 class="text-primary"><%= course.course_name %></h1>
-  <p class="text-muted">Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
+  <p class="text-muted">
+    Credits: <%= course.credits %> | Branch: <%= course.branch %>
+  </p>
+  <p class="text-muted">
+    Professor: <strong><%= course.professor_name%>(<%= course.professor_email %>)</strong>
+  </p>
 
   <hr>
+
 
   <!-- Lectures Section -->
   <div class="card mb-4">

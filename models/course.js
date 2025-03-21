@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const professor = require('./professor');
 
 const AssignmentSchema = new mongoose.Schema({
     title: String,
@@ -18,7 +19,9 @@ let courseSchema = new mongoose.Schema({
     credits: { type: Number, required: true },
     branch: { type: String, required: true },
     lectures: [lectureSchema],
-    assignments: [AssignmentSchema]
+    assignments: [AssignmentSchema],
+    professor_email: { type: String, required: true },
+    professor_name: { type: String, required: true }
 });
 
 let Courses = mongoose.model('Courses', courseSchema);

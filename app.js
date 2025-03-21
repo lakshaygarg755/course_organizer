@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const MongoStore = require('connect-mongo');
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
@@ -14,6 +15,7 @@ const lectureRoutes = require("./routes/lecture_routes");
 const assignmentRoutes = require("./routes/assignment_routes");
 const authRoutes = require("./routes/auth_routes");
 const adminRoutes = require('./routes/admin_routes');
+const professorRoutes = require('./routes/professor_routes');
 
 
 // Import User Model
@@ -22,14 +24,23 @@ const User = require("./models/user");
 // Express App
 const app = express();
 
-// Session Middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+app.use(session({
+  secret: "yourSecretKey",  // Change this to a strong secret
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({
+      mongoUrl: 'mongodb://localhost:27017/course',  // Use your existing courseDB
+      collectionName: 'sessions',  // Optional, default is "sessions"
+      ttl: 60 * 60 * 24,  // Session expiry in seconds (24 hours)
+  }),
+  cookie: {
+      maxAge: 1000 * 60 * 60 * 24,  // 24 hours
+      httpOnly: true,  
+      secure: false,  // Set to `true` if using HTTPS
+      sameSite: "lax",
+  }
+}));
+
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -83,6 +94,7 @@ app.use("/", courseRoutes);
 app.use("/", lectureRoutes);
 app.use("/", assignmentRoutes);
 app.use('/', adminRoutes);
+app.use('/',professorRoutes);
 
 
 // Home Route
