@@ -1,0 +1,27 @@
+<h1>Manage Users</h1>
+
+<table border="1">
+    <tr>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+    <% users.forEach(user => { %>
+        <tr>
+            <td><%= user.username %></td>
+            <td><%= user.role %></td>
+            <td>
+                <% if (user.role === "user") { %>
+                    <form action="/admin/make-admin/<%= user._id %>" method="POST">
+                        <button type="submit">Make Admin</button>
+                    </form>
+                <% } %>
+                <% if (user.role === "admin" && users.filter(u => u.role === "admin").length > 1) { %>
+                    <form action="/admin/delete-admin/<%= user._id %>" method="POST">
+                        <button type="submit">Delete Admin</button>
+                    </form>
+                <% } %>
+            </td>
+        </tr>
+    <% }); %>
+</table>

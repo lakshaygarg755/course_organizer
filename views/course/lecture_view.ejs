@@ -1,21 +1,27 @@
 <%- include('../partials/header') %>
 
-<h1><%= course.course_name %></h1>
-<p>Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h1 class="mb-0"><%= course.course_name %></h1>
+      <p class="mb-0">Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
+    </div>
+    <div class="card-body">
+      <h2 class="text-secondary">Lecture Details</h2>
+      <p><strong>Title:</strong> <%= lecture.title %></p>
+      <p><strong>Description:</strong> <%= lecture.description %></p>
 
-<h2>Lecture Details</h2>
-<p><strong>Title:</strong> <%= lecture.title %></p>
-<p><strong>Description:</strong> <%= lecture.description %></p>
+      <% if (lecture.pdf_url) { %>
+        <p><strong>PDF:</strong> 
+          <a href="<%= lecture.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">View PDF</a>
+        </p>
+      <% } %>
 
-<% if (lecture.pdf_url) { %>
-  <p><strong>PDF:</strong> <a href="<%= lecture.pdf_url %>" target="_blank">Download PDF</a></p>
-<% } %>
+      <hr>
 
-<hr>
-
-<h2>Assignments</h2>
-<a href="/courses/<%= course.course_id %>/assignments">View Course Assignments</a>
-
-<a href="/courses/<%= course.course_id %>">Back to Course</a>
+      <a href="/courses/<%= course.course_id %>" class="btn btn-secondary">Back to Course</a>
+    </div>
+  </div>
+</div>
 
 <%- include('../partials/footer') %>

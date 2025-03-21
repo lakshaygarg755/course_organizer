@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+
+<div class="container text-center mt-5">
+    <h1>Welcome to the Online Classroom</h1>
+
+    <% if (user && role === "admin") { %>
+        <p class="lead">Hello, <strong><%= user.username %></strong> (Admin)</p>
+        <a href="/admin" class="btn btn-warning">Admin Panel</a>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    <% } else if (user) { %>
+        <p class="lead">Hello, <strong><%= user.username %></strong></p>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    <% } else { %>
+        <p class="lead">You are browsing as a Guest.</p>
+        <a href="/login" class="btn btn-primary">Login</a>
+        <a href="/register" class="btn btn-success">Register</a>
+    <% } %>
+
+    <% if (!user) { %>
+        <a href="/guest" class="btn btn-outline-secondary">Continue as Guest</a>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>

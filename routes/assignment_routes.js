@@ -9,7 +9,7 @@ const app = express.Router();
 // Multer Storage for Assignment PDF Uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'assignments/');
+        cb(null, 'uploads/assignments/');  // ✅ Correct path
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
@@ -28,32 +28,12 @@ app.post('/courses/:course_id/assignments', upload.single('pdf'), async (req, re
     let newAssignment = {
         title: req.body.title,
         description: req.body.description,
-        pdf_url: req.file ? `/uploads/assignments/${req.file.filename}` : null // Store file path
+        pdf_url: req.file ? `/uploads/assignments/${req.file.filename}` : null // ✅ Correct URL format
     };
 
     course.assignments.push(newAssignment);
     await course.save();
     res.redirect(`/courses/${req.params.course_id}`);
-});
-
-// View assignments for a specific course
-app.get('/courses/:course_id/assignments', async (req, res) => {
-    let course = await Courses.findOne({ course_id: req.params.course_id });
-    if (!course) return res.status(404).send('Course not found');
-
-    res.render('course/assignment_list', { course });
-});
-
-// Download assignment PDF
-app.get('/courses/:course_id/assignments/:assignment_id/download', async (req, res) => {
-    let course = await Courses.findOne({ course_id: req.params.course_id });
-    if (!course) return res.status(404).send('Course not found');
-
-    let assignment = course.assignments.id(req.params.assignment_id);
-    if (!assignment) return res.status(404).send('Assignment not found');
-
-    const filePath = path.join(__dirname, '..', assignment.pdf_url);
-    res.download(filePath); // Send the file for download
 });
 
 // Delete an assignment

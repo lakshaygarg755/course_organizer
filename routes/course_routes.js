@@ -3,14 +3,21 @@ const Courses = require('../models/course');
 const app = express.Router();
 
 let course_add_flag = 0;
-app.get('/courses', async (req,res)=>{
-    let data = await Courses.find().lean();
-    res.render('course/courses',{
-        courses:data,
-        flag : course_add_flag,
-    });
-    course_add_flag = 0;
-})
+app.get('/courses', async (req, res) => {
+    try {
+        let data = await Courses.find().lean();
+        res.render('course/courses', {
+            courses: data,
+            user: req.user,  // ✅ Pass the logged-in user object
+            flag: course_add_flag,
+        });
+        course_add_flag = 0;
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+});
+
 
 app.post('/courses', async (req,res)=>{
     let data = new Courses({
