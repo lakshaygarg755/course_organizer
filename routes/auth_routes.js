@@ -53,12 +53,14 @@ app.post("/login", (req, res, next) => {
 
 
 // Logout
-app.post("/logout", (req, res, next) => {
-    req.logout();
-    req.session.destroy(() => {
-        res.redirect("/");
+app.post('/logout', (req, res, next) => {
+    req.logout(function (err) {
+        if (err) return next(err);  // Handle errors properly
+        req.session.destroy(() => {
+            res.redirect('/login');  // ✅ Redirect to login after logout
+        });
     });
-
 });
+
 
 module.exports = app;

@@ -5,7 +5,7 @@ const { isAdmin } = require("../middleware/auth_middleware");
 const app = express.Router();
 
 // GET all users (Admin Only)
-app.get("/admin/users", isAdmin, async (req, res) => {
+app.get("/admins", isAdmin, async (req, res) => {
     try {
         const users = await User.find({});
         res.render("admin_users", { users, message: null, error: null });
@@ -56,11 +56,6 @@ app.post("/admin/delete-admin/:id", isAdmin, async (req, res) => {
         console.error(err);
         res.send("Server error occurred.");
     }
-});
-
-// Admin Dashboard Route
-app.get("/admin", isAdmin, (req, res) => {
-    res.render("admin_dashboard", { user: req.user, message: null, error: null });
 });
 
 module.exports = app;

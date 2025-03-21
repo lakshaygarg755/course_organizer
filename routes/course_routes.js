@@ -68,18 +68,24 @@ app.get('/courses/add', isAdmin, async (req, res) => {
 
 // 🔹 Public Route - Users can view a single course
 app.get('/courses/:course_id', isAuthenticated, async (req, res) => {
-    let course = await Courses.findOne({ course_id: req.params.course_id }).lean();
+    try {
+        let course = await Courses.findOne({ course_id: req.params.course_id }).lean();
 
-    if (!course) {
-        return res.status(404).send("Course not found");
+        if (!course) {
+            return res.status(404).send("Course not found");
+        }
+
+        if (!course.lectures) {
+            course.lectures = [];
+        }
+
+        res.render('course/view', { course, user: req.user });  // ✅ Pass `user`
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
     }
-
-    if (!course.lectures) {
-        course.lectures = [];
-    }
-
-    res.render('course/view', { course });
 });
+
 
 // 🔒 Protected Route - Only Admins can edit courses
 app.post('/courses/:course_id', isAdmin, async (req, res) => {

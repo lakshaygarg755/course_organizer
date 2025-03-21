@@ -4,14 +4,16 @@ const Professor = require("../models/professor");
 const { isAdmin } = require("../middleware/auth_middleware");
 
 // GET: Display all professors
-app.get("/admin/professors", isAdmin, async (req, res) => {
+app.get('/professors', isAdmin, async (req, res) => {
     try {
-        const professors = await Professor.find();
-        res.render("admin/professors", { professors });
+        const professors = await Professor.find().lean();
+        res.render('admin/professors', { professors, user: req.user });  // ✅ Pass `user`
     } catch (err) {
+        console.error(err);
         res.status(500).send("Server Error");
     }
 });
+
 
 // POST: Add a new professor
 app.post("/admin/professors", isAdmin, async (req, res) => {
