@@ -8,7 +8,7 @@ const app = express.Router();
 app.get("/admins", isAdmin, async (req, res) => {
     try {
         const users = await User.find({});
-        res.render("admin_users", { users, message: null, error: null });
+        res.render("admin_users", { users, message: null, error: null, user : req.user });
     } catch (err) {
         console.error(err);
         res.send("Something went wrong!");
@@ -29,7 +29,7 @@ app.post("/admin/make-admin/:id", isAdmin, async (req, res) => {
 
         user.role = "admin";
         await user.save();
-        res.send(`${user.username} is now an admin.`);
+        res.redirect('/admins')
     } catch (err) {
         console.error(err);
         res.send("Server error occurred.");

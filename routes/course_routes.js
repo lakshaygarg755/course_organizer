@@ -101,7 +101,7 @@ app.post('/courses/:course_id', isAdmin, async (req, res) => {
 // 🔒 Protected Route - Only Admins can access the edit page
 app.get('/courses/:course_id/edit', isAdmin, async (req, res) => {
     let data = await Courses.findOne({ course_id: req.params.course_id });
-    res.render('course/edit', { course: [data] });
+    res.render('course/edit', { course: [data], user: req.user });
 });
 
 // 🔒 Protected Route - Only Admins can delete courses

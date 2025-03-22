@@ -25,7 +25,7 @@ app.post("/admin/professors", isAdmin, async (req, res) => {
         }
         const newProfessor = new Professor({ name, email });
         await newProfessor.save();
-        res.redirect("/admin/professors");
+        res.redirect("/professors");
     } catch (err) {
         res.status(500).send("Server Error");
     }
