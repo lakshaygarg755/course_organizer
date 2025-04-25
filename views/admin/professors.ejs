@@ -26,22 +26,31 @@
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Actions</th>
                     </tr>
-                </thead>
+                </thead>                
                 <tbody>
                     <% if (professors.length > 0) { %>
                         <% professors.forEach(professor => { %>
                             <tr>
                                 <td><%= professor.name %></td>
                                 <td><%= professor.email %></td>
+                                <td>
+                                    <a href="/professors/<%= professor._id %>/delete" 
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Are you sure you want to delete this professor?');">
+                                       Delete
+                                    </a>
+                                </td>
                             </tr>
                         <% }) %>
                     <% } else { %>
                         <tr>
-                            <td colspan="2" class="text-center">No professors found.</td>
+                            <td colspan="3" class="text-center">No professors found.</td>
                         </tr>
                     <% } %>
                 </tbody>
+                
             </table>
         </div>
     </div>

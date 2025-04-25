@@ -31,4 +31,16 @@ app.post("/admin/professors", isAdmin, async (req, res) => {
     }
 });
 
+// DELETE: Delete a professor by ID
+app.get("/professors/:id/delete", isAdmin, async (req, res) => {
+    try {
+        await Professor.findByIdAndDelete(req.params.id);
+        res.redirect("/professors");
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+});
+
+
 module.exports = app;
