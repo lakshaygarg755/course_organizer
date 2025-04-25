@@ -25,18 +25,18 @@ const User = require("./models/user");
 const app = express();
 
 app.use(session({
-  secret: "yourSecretKey",  // Change this to a strong secret
+  secret: process.env.SESSION_SECRET,  
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-      mongoUrl: 'mongodb://localhost:27017/course',  // Use your existing courseDB
-      collectionName: 'sessions',  // Optional, default is "sessions"
-      ttl: 60 * 60 * 24,  // Session expiry in seconds (24 hours)
+      mongoUrl: 'mongodb://localhost:27017/course',  
+      collectionName: 'sessions',  
+      ttl: 60 * 60 * 24,  
   }),
   cookie: {
-      maxAge: 1000 * 60 * 60 * 24,  // 24 hours
+      maxAge: 1000 * 60 * 60 * 24,  
       httpOnly: true,  
-      secure: false,  // Set to `true` if using HTTPS
+      secure: false,  
       sameSite: "lax",
   }
 }));
@@ -49,7 +49,7 @@ app.use(passport.session());
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/course");
 
-// Define Passport Local Strategy
+
 passport.use(
   new Strategy(async (username, password, done) => {
     try {
@@ -88,6 +88,8 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads")); // Serve uploaded files
 
+
+
 // Use Routes
 app.use("/", authRoutes);
 app.use("/", courseRoutes);
@@ -99,25 +101,8 @@ app.use('/',professorRoutes);
 
 // Home Route
 app.get("/", (req, res) => {
-    if (!req.session.role) {
-        req.session.role = "guest";  // Default role for new visitors
-    }
-    res.render("index", { user: req.session.user, role: req.session.role });
+    res.render("index", { user: req.user, role: req.session.role });
 });
-
-app.get("/guest", (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.log(err);
-            return res.redirect("/"); // Fallback in case of error
-        }
-        
-        req.session = null; // Reset session to start fresh
-        res.redirect("/courses"); // Redirect guest users to courses
-    });
-});
-
-
 
 // Start Server
-app.listen(3000, () => console.log("Server started at http://localhost:3000/"));
+app.listen(80, () => console.log("Server started at http://localhost:80/"));

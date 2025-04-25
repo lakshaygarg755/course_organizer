@@ -59,7 +59,7 @@ app.post('/courses', isAdmin, async (req, res) => {
 app.get('/courses/add', isAdmin, async (req, res) => {
     try {
         const professors = await Professor.find().lean();
-        res.render('course/add', { professors });
+        res.render('course/add', { professors, user: req.user });
     } catch (err) {
         console.error(err);
         res.status(500).send("Server Error");

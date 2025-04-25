@@ -57,7 +57,7 @@ app.post('/logout', (req, res, next) => {
     req.logout(function (err) {
         if (err) return next(err);  // Handle errors properly
         req.session.destroy(() => {
-            res.redirect('/login');  // ✅ Redirect to login after logout
+            res.redirect('/'); 
         });
     });
 });

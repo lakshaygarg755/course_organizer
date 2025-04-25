@@ -36,7 +36,7 @@ app.post("/admin/make-admin/:id", isAdmin, async (req, res) => {
     }
 });
 
-// Delete an admin (Ensure at least 1 remains)
+
 app.post("/admin/delete-admin/:id", isAdmin, async (req, res) => {
     try {
         const adminCount = await User.countDocuments({ role: "admin" });
