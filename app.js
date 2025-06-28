@@ -29,7 +29,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-      mongoUrl: 'mongodb://localhost:27017/course',  
+      mongoUrl: 'mongodb+srv://arin:arinisgreat@cluster0.cksskgm.mongodb.net/courses',  
       collectionName: 'sessions',  
       ttl: 60 * 60 * 24,  
   }),
@@ -47,7 +47,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/course");
+mongoose.connect("mongodb+srv://arin:arinisgreat@cluster0.cksskgm.mongodb.net/courses");
 
 
 passport.use(
