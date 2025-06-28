@@ -42,6 +42,7 @@
     </div>
   </div>
 
+ <% if (user && user.role === 'admin') { %>
   <!-- Add Lecture Form -->
   <div class="card mb-4">
     <div class="card-header">
@@ -62,6 +63,8 @@
       </form>
     </div>
   </div>
+  <% } %>
+
 
   <!-- Assignments Section -->
   <div class="card mb-4">
@@ -89,6 +92,7 @@
     </div>
   </div>
 
+  <% if (user && user.role === 'admin') { %>
   <!-- Add Assignment Form -->
   <div class="card mb-4">
     <div class="card-header">
@@ -110,5 +114,5 @@
     </div>
   </div>
 </div>
-
+<% } %>
 <%- include('../partials/footer') %>
