@@ -49,7 +49,6 @@ app.use(passport.session());
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/course");
 
-
 passport.use(
   new Strategy(async (username, password, done) => {
     try {
