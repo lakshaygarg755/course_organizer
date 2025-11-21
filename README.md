@@ -32,7 +32,7 @@ A web-based application to manage and organize university courses, lectures, ass
 1.  **Clone the repository:**
 
     ```bash
-    git clone <repository-url>
+    git clone git@github.com:lakshaygarg755/course_organizer.git
     cd course_organizer
     ```
 
