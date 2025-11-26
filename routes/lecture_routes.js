@@ -1,21 +1,8 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const Courses = require('../models/course');
+const { cloudinary, upload } = require('../config/cloudinary');
 
 const app = express.Router();
-
-// Multer Storage for PDF Uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Upload PDFs to the 'uploads/' directory
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
-    }
-});
-
-const upload = multer({ storage: storage });
 
 /** ---------- Lecture Routes ---------- **/
 
@@ -27,7 +14,7 @@ app.post('/courses/:course_id/lectures', upload.single('pdf'), async (req, res) 
     let newLecture = {
         title: req.body.title,
         description: req.body.description,
-        pdf_url: req.file ? `/uploads/${req.file.filename}` : null // Store file path
+        pdf_url: req.file ? req.file.path : null // Cloudinary URL
     };
 
     course.lectures.push(newLecture);
@@ -59,7 +46,14 @@ app.post('/courses/:course_id/lectures/:lecture_id', upload.single('pdf'), async
     lecture.description = req.body.description;
 
     if (req.file) {
-        lecture.pdf_url = `/uploads/${req.file.filename}`;
+        // Delete old file from Cloudinary if it exists
+        if (lecture.pdf_url) {
+            const publicId = extractPublicId(lecture.pdf_url);
+            if (publicId) {
+                await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+            }
+        }
+        lecture.pdf_url = req.file.path; // New Cloudinary URL
     }
 
     await course.save();
@@ -68,8 +62,6 @@ app.post('/courses/:course_id/lectures/:lecture_id', upload.single('pdf'), async
 
 
 // Delete a lecture
-const fs = require('fs'); // File system module to handle file deletion
-
 app.get('/courses/:course_id/lectures/:lecture_id/delete', async (req, res) => {
     try {
         let course = await Courses.findOne({ course_id: req.params.course_id });
@@ -78,14 +70,12 @@ app.get('/courses/:course_id/lectures/:lecture_id/delete', async (req, res) => {
         let lecture = course.lectures.id(req.params.lecture_id);
         if (!lecture) return res.status(404).send('Lecture not found');
 
-        // If the lecture has a PDF, delete it from storage
+        // Delete PDF from Cloudinary if it exists
         if (lecture.pdf_url) {
-            const filePath = path.join(__dirname, '..', lecture.pdf_url); // Get absolute path
-            fs.unlink(filePath, (err) => {
-                if (err && err.code !== 'ENOENT') {
-                    console.error(`Error deleting file: ${err}`);
-                }
-            });
+            const publicId = extractPublicId(lecture.pdf_url);
+            if (publicId) {
+                await cloudinary.uploader.destroy(publicId, { resource_type: 'raw' });
+            }
         }
 
         // Remove lecture from the course document
@@ -99,5 +89,11 @@ app.get('/courses/:course_id/lectures/:lecture_id/delete', async (req, res) => {
     }
 });
 
+// Helper function to extract public_id from Cloudinary URL
+function extractPublicId(url) {
+    if (!url) return null;
+    const matches = url.match(/\/course-organizer\/(.+)$/);
+    return matches ? `course-organizer/${matches[1]}` : null;
+}
 
 module.exports = app;

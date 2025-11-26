@@ -88,7 +88,7 @@ passport.deserializeUser(async (id, done) => {
 // Middleware
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/uploads", express.static("uploads")); // Serve uploaded files
+// Files are now served from Cloudinary, not local uploads folder
 
 
 
