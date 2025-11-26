@@ -88,16 +88,19 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+
 // Middleware
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-// Files are now served from Cloudinary, not local uploads folder
+// Serve static files (favicon, etc.)
+app.use(express.static('public'));
 
 // Request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
 });
+
 
 
 
