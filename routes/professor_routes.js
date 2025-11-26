@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express.Router();
 const Professor = require("../models/professor");
-const { isAdmin } = require("../middleware/auth_middleware");
+const { isAdmin, isAuthenticated } = require("../middleware/auth_middleware");
 
-// GET: Display all professors
-app.get('/professors', isAdmin, async (req, res) => {
+// GET: Display all professors (all authenticated users can view)
+app.get('/professors', isAuthenticated, async (req, res) => {
     try {
         const professors = await Professor.find().lean();
         res.render('admin/professors', { professors, user: req.user });  // ✅ Pass `user`

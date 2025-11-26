@@ -4,117 +4,131 @@
         <!-- Page Header -->
         <div class="mb-4">
             <h1 class="display-5 fw-bold">
-                <i class="bi bi-person-badge text-primary me-2"></i>Manage Professors
+                <i class="bi bi-person-badge text-primary me-2"></i>
+                <% if (user && user.role==='admin' ) { %>Manage<% } else { %>All<% } %> Professors
             </h1>
-            <p class="lead text-muted">Add and manage professor information</p>
+            <p class="lead text-muted">
+                <% if (user && user.role==='admin' ) { %>Add and manage professor information<% } else { %>View all
+                        professors in the system<% } %>
+            </p>
         </div>
 
         <div class="row">
-            <!-- Add Professor Form -->
-            <div class="col-lg-4 mb-4">
-                <div class="card shadow-sm border-0 sticky-top" style="top: 80px;">
-                    <div class="card-header bg-success text-white">
-                        <h4 class="mb-0">
-                            <i class="bi bi-plus-circle me-2"></i>Add Professor
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        <form action="/admin/professors" method="POST">
-                            <div class="mb-3">
-                                <label for="name" class="form-label fw-semibold">
-                                    <i class="bi bi-person me-1"></i>Professor Name
-                                </label>
-                                <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="Enter full name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label fw-semibold">
-                                    <i class="bi bi-envelope me-1"></i>Email Address
-                                </label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="professor@example.com" required>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-check-circle me-2"></i>Add Professor
-                                </button>
-                            </div>
-                        </form>
+            <!-- Add Professor Form (Admin Only) -->
+            <% if (user && user.role==='admin' ) { %>
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow-sm border-0 sticky-top" style="top: 80px;">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0">
+                                <i class="bi bi-plus-circle me-2"></i>Add Professor
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="/admin/professors" method="POST">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label fw-semibold">
+                                        <i class="bi bi-person me-1"></i>Professor Name
+                                    </label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Enter full name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label fw-semibold">
+                                        <i class="bi bi-envelope me-1"></i>Email Address
+                                    </label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="professor@example.com" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-check-circle me-2"></i>Add Professor
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <% } %>
 
-            <!-- Professors List -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-primary text-white py-3">
-                        <h4 class="mb-0">
-                            <i class="bi bi-list-ul me-2"></i>All Professors
-                        </h4>
-                    </div>
-                    <div class="card-body p-0">
-                        <% if (professors && professors.length> 0) { %>
-                            <div class="table-responsive">
-                                <table class="table table-hover mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th class="px-4">
-                                                <i class="bi bi-person me-2"></i>Name
-                                            </th>
-                                            <th>
-                                                <i class="bi bi-envelope me-2"></i>Email
-                                            </th>
-                                            <th class="text-center">
-                                                <i class="bi bi-gear me-2"></i>Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% professors.forEach(professor=> { %>
-                                            <tr>
-                                                <td class="px-4 align-middle">
-                                                    <strong>
-                                                        <%= professor.name %>
-                                                    </strong>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <a href="mailto:<%= professor.email %>"
-                                                        class="text-decoration-none">
-                                                        <%= professor.email %>
-                                                    </a>
-                                                </td>
-                                                <td class="text-center align-middle">
-                                                    <a href="/professors/<%= professor._id %>/delete"
-                                                        class="btn btn-sm btn-outline-danger"
-                                                        onclick="return confirm('Are you sure you want to delete <%= professor.name %>? This action cannot be undone.');">
-                                                        <i class="bi bi-trash me-1"></i>Delete
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <% }); %>
-                                    </tbody>
-                                </table>
+                    <!-- Professors List -->
+                    <div class="<% if (user && user.role === 'admin') { %>col-lg-8<% } else { %>col-12<% } %>">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-primary text-white py-3">
+                                <h4 class="mb-0">
+                                    <i class="bi bi-list-ul me-2"></i>All Professors
+                                </h4>
                             </div>
-                            <% } else { %>
-                                <div class="text-center py-5">
-                                    <i class="bi bi-inbox display-4 text-muted"></i>
-                                    <h4 class="mt-3">No Professors Yet</h4>
-                                    <p class="text-muted">Add your first professor using the form on the left.</p>
+                            <div class="card-body p-0">
+                                <% if (professors && professors.length> 0) { %>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th class="px-4">
+                                                        <i class="bi bi-person me-2"></i>Name
+                                                    </th>
+                                                    <th>
+                                                        <i class="bi bi-envelope me-2"></i>Email
+                                                    </th>
+                                                    <% if (user && user.role==='admin' ) { %>
+                                                        <th class="text-center">
+                                                            <i class="bi bi-gear me-2"></i>Actions
+                                                        </th>
+                                                        <% } %>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% professors.forEach(professor=> { %>
+                                                    <tr>
+                                                        <td class="px-4 align-middle">
+                                                            <strong>
+                                                                <%= professor.name %>
+                                                            </strong>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <a href="mailto:<%= professor.email %>"
+                                                                class="text-decoration-none">
+                                                                <%= professor.email %>
+                                                            </a>
+                                                        </td>
+                                                        <% if (user && user.role==='admin' ) { %>
+                                                            <td class="text-center align-middle">
+                                                                <a href="/professors/<%= professor._id %>/delete"
+                                                                    class="btn btn-sm btn-outline-danger"
+                                                                    onclick="return confirm('Are you sure you want to delete <%= professor.name %>? This action cannot be undone.');">
+                                                                    <i class="bi bi-trash me-1"></i>Delete
+                                                                </a>
+                                                            </td>
+                                                            <% } %>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <% } else { %>
+                                        <div class="text-center py-5">
+                                            <i class="bi bi-inbox display-4 text-muted"></i>
+                                            <h4 class="mt-3">No Professors Yet</h4>
+                                            <p class="text-muted">
+                                                <% if (user && user.role==='admin' ) { %>Add your first professor using
+                                                    the form on the left.<% } else { %>No professors have been added to
+                                                        the system yet.<% } %>
+                                            </p>
+                                        </div>
+                                        <% } %>
+                            </div>
+                            <% if (professors && professors.length> 0) { %>
+                                <div class="card-footer bg-light">
+                                    <small class="text-muted">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        Total Professors: <strong>
+                                            <%= professors.length %>
+                                        </strong>
+                                    </small>
                                 </div>
                                 <% } %>
-                    </div>
-                    <% if (professors && professors.length> 0) { %>
-                        <div class="card-footer bg-light">
-                            <small class="text-muted">
-                                <i class="bi bi-info-circle me-1"></i>
-                                Total Professors: <strong>
-                                    <%= professors.length %>
-                                </strong>
-                            </small>
                         </div>
-                        <% } %>
-                </div>
-            </div>
+                    </div>
         </div>
     </div>
 
