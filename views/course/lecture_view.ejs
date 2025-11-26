@@ -1,27 +1,88 @@
 <%- include('../partials/header') %>
 
-<div class="container mt-4">
-  <div class="card">
-    <div class="card-header bg-primary text-white">
-      <h1 class="mb-0"><%= course.course_name %></h1>
-      <p class="mb-0">Credits: <%= course.credits %> | Branch: <%= course.branch %></p>
-    </div>
-    <div class="card-body">
-      <h2 class="text-secondary">Lecture Details</h2>
-      <p><strong>Title:</strong> <%= lecture.title %></p>
-      <p><strong>Description:</strong> <%= lecture.description %></p>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/courses">Courses</a></li>
+            <li class="breadcrumb-item"><a href="/courses/<%= course.course_id %>">
+                <%= course.course_name %>
+              </a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lecture</li>
+          </ol>
+        </nav>
 
-      <% if (lecture.pdf_url) { %>
-        <p><strong>PDF:</strong> 
-          <a href="<%= lecture.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">View PDF</a>
-        </p>
-      <% } %>
+        <!-- Course Info Header -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header bg-primary text-white py-3">
+            <h4 class="mb-0">
+              <i class="bi bi-book-half me-2"></i>
+              <%= course.course_name %>
+            </h4>
+            <small>
+              <i class="bi bi-award me-1"></i>
+              <%= course.credits %> Credits |
+                <i class="bi bi-diagram-3 ms-2 me-1"></i>
+                <%= course.branch %>
+            </small>
+          </div>
+        </div>
 
-      <hr>
+        <!-- Lecture Details Card -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header bg-light">
+            <h3 class="mb-0">
+              <i class="bi bi-file-earmark-text text-primary me-2"></i>Lecture Details
+            </h3>
+          </div>
+          <div class="card-body p-4">
+            <div class="mb-4">
+              <h5 class="text-muted mb-2">Title</h5>
+              <h2 class="fw-bold">
+                <%= lecture.title %>
+              </h2>
+            </div>
 
-      <a href="/courses/<%= course.course_id %>" class="btn btn-secondary">Back to Course</a>
+            <% if (lecture.description) { %>
+              <div class="mb-4">
+                <h5 class="text-muted mb-2">Description</h5>
+                <p class="lead">
+                  <%= lecture.description %>
+                </p>
+              </div>
+              <% } %>
+
+                <% if (lecture.pdf_url) { %>
+                  <div class="mb-4">
+                    <h5 class="text-muted mb-2">Lecture Material</h5>
+                    <div class="d-grid gap-2 d-md-block">
+                      <a href="<%= lecture.pdf_url %>" class="btn btn-primary btn-lg" target="_blank">
+                        <i class="bi bi-file-pdf me-2"></i>View PDF
+                      </a>
+                      <a href="<%= lecture.pdf_url %>" class="btn btn-outline-primary btn-lg" download>
+                        <i class="bi bi-download me-2"></i>Download PDF
+                      </a>
+                    </div>
+                  </div>
+                  <% } else { %>
+                    <div class="alert alert-info">
+                      <i class="bi bi-info-circle me-2"></i>
+                      No PDF material available for this lecture.
+                    </div>
+                    <% } %>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="d-grid gap-2 d-md-flex">
+          <a href="/courses/<%= course.course_id %>" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-arrow-left me-2"></i>Back to Course
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer') %>

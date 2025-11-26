@@ -1,24 +1,167 @@
 <%- include('partials/header') %>
 
-<div class="container text-center mt-5">
-    <h1>Welcome to the Online Classroom</h1>
+    <!-- Hero Section with Bootstrap bg-primary -->
+    <section class="bg-primary text-white py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-3 fw-bold mb-4">Welcome to EduPortal</h1>
+                    <p class="lead mb-5">Your comprehensive platform for managing courses, lectures, and assignments.
+                        Empowering education through technology.</p>
 
-    <% if (user && role === "admin") { %>
-        <p class="lead">Hello, <strong><%= user.username %></strong> (Admin)</p>
-        <a href="/admin" class="btn btn-warning">Admin Panel</a>
-        <form action="/logout" method="post">
-            <button type="submit" class="btn btn-danger">Logout</button>
-        </form>
-    <% } else if (user) { %>
-        <p class="lead">Hello, <strong><%= user.username %></strong></p>
-        <form action="/logout" method="post">
-            <button type="submit" class="btn btn-danger">Logout</button>
-        </form>
-    <% } else { %>
-        <p class="lead">You are browsing as a Guest.</p>
-        <a href="/login" class="btn btn-primary">Login</a>
-        <a href="/register" class="btn btn-success">Register</a>
-    <% } %>
-</div>
+                    <% if (user && role==="admin" ) { %>
+                        <div class="mb-4">
+                            <p class="fs-4">Hello, <strong>
+                                    <%= user.username %>
+                                </strong> <span class="badge bg-warning text-dark ms-2">Admin</span></p>
+                        </div>
+                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                            <a href="/courses" class="btn btn-light btn-lg">
+                                <i class="bi bi-book me-2"></i>View Courses
+                            </a>
+                            <a href="/admin" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-shield-lock me-2"></i>Admin Panel
+                            </a>
+                        </div>
+                        <% } else if (user) { %>
+                            <div class="mb-4">
+                                <p class="fs-4">Hello, <strong>
+                                        <%= user.username %>
+                                    </strong></p>
+                            </div>
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a href="/courses" class="btn btn-light btn-lg">
+                                    <i class="bi bi-book me-2"></i>Browse Courses
+                                </a>
+                                <a href="/professors" class="btn btn-outline-light btn-lg">
+                                    <i class="bi bi-person-badge me-2"></i>View Professors
+                                </a>
+                            </div>
+                            <% } else { %>
+                                <div class="mb-4">
+                                    <p class="fs-4">Start your learning journey today</p>
+                                </div>
+                                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                    <a href="/register" class="btn btn-light btn-lg">
+                                        <i class="bi bi-person-plus me-2"></i>Get Started
+                                    </a>
+                                    <a href="/login" class="btn btn-outline-light btn-lg">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                                    </a>
+                                </div>
+                                <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<%- include('partials/footer') %>
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Why Choose EduPortal?</h2>
+                <p class="lead text-muted">Everything you need for effective course management</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                style="width: 80px; height: 80px;">
+                                <i class="bi bi-book-half fs-1 text-primary"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Course Management</h4>
+                            <p class="card-text text-muted">Organize and access all your courses in one centralized
+                                platform. Easy navigation and intuitive interface.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                style="width: 80px; height: 80px;">
+                                <i class="bi bi-file-earmark-text fs-1 text-success"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Lecture Materials</h4>
+                            <p class="card-text text-muted">Access lecture notes, presentations, and study materials
+                                anytime, anywhere. Never miss important content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center p-4">
+                            <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                                style="width: 80px; height: 80px;">
+                                <i class="bi bi-clipboard-check fs-1 text-warning"></i>
+                            </div>
+                            <h4 class="card-title mb-3">Assignment Tracking</h4>
+                            <p class="card-text text-muted">Keep track of all assignments and deadlines. Submit your
+                                work and monitor your progress efficiently.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <% if (user) { %>
+        <section class="py-5">
+            <div class="container py-4">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card bg-primary text-white border-0 shadow">
+                            <div class="card-body text-center p-4">
+                                <i class="bi bi-book display-4 mb-3"></i>
+                                <h3 class="display-6 fw-bold">Courses</h3>
+                                <p class="mb-0">Access comprehensive course materials</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-success text-white border-0 shadow">
+                            <div class="card-body text-center p-4">
+                                <i class="bi bi-people display-4 mb-3"></i>
+                                <h3 class="display-6 fw-bold">Professors</h3>
+                                <p class="mb-0">Connect with expert educators</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card bg-info text-white border-0 shadow">
+                            <div class="card-body text-center p-4">
+                                <i class="bi bi-trophy display-4 mb-3"></i>
+                                <h3 class="display-6 fw-bold">Excellence</h3>
+                                <p class="mb-0">Achieve your academic goals</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <% } %>
+
+            <!-- Call to Action -->
+            <% if (!user) { %>
+                <section class="py-5 bg-dark text-white">
+                    <div class="container text-center py-4">
+                        <h2 class="display-5 fw-bold mb-4">Ready to Get Started?</h2>
+                        <p class="lead mb-4">Join thousands of students and educators using EduPortal</p>
+                        <div class="d-flex gap-3 justify-content-center flex-wrap">
+                            <a href="/register" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>Create Account
+                            </a>
+                            <a href="/login" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <% } %>
+
+                    <%- include('partials/footer') %>

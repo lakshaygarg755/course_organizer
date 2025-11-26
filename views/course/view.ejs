@@ -1,118 +1,250 @@
 <%- include('../partials/header') %>
 
-<div class="container mt-4">
-  <h1 class="text-primary"><%= course.course_name %></h1>
-  <p class="text-muted">
-    Credits: <%= course.credits %> | Branch: <%= course.branch %>
-  </p>
-  <p class="text-muted">
-    Professor: <strong><%= course.professor_name%>(<%= course.professor_email %>)</strong>
-  </p>
-
-  <hr>
-
-
-  <!-- Lectures Section -->
-  <div class="card mb-4">
-    <div class="card-header bg-secondary text-white">
-      <h3 class="mb-0">Lectures</h3>
-    </div>
-    <div class="card-body">
-      <% if (course.lectures && course.lectures.length > 0) { %>
-        <ul class="list-group">
-          <% course.lectures.forEach(lecture => { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong>
-                <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>" class="text-decoration-none text-dark">
-                  <%= lecture.title %>
-                </a>
-              </strong>
-              <div>
-                <% if (lecture.pdf_url) { %>
-                  <a href="<%= lecture.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">View PDF</a>
-                <% } %>
-                <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>/delete" class="btn btn-sm btn-outline-danger">Delete</a>
-              </div>
+  <div class="container my-5">
+    <!-- Course Header -->
+    <div class="row mb-4">
+      <div class="col-lg-8">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/courses">Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+              <%= course.course_name %>
             </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p class="text-warning">No lectures available for this course.</p>
-      <% } %>
+          </ol>
+        </nav>
+        <h1 class="display-5 fw-bold text-primary">
+          <i class="bi bi-book-half me-2"></i>
+          <%= course.course_name %>
+        </h1>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <% if (user && user.role==='admin' ) { %>
+          <a href="/courses/<%= course.course_id %>/edit" class="btn btn-warning">
+            <i class="bi bi-pencil me-2"></i>Edit Course
+          </a>
+          <% } %>
+      </div>
     </div>
-  </div>
 
- <% if (user && user.role === 'admin') { %>
-  <!-- Add Lecture Form -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="mb-0">Add Lecture</h3>
-    </div>
-    <div class="card-body">
-      <form action="/courses/<%= course.course_id %>/lectures" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-          <input type="text" name="title" class="form-control" placeholder="Lecture Title" required>
-        </div>
-        <div class="mb-3">
-          <input type="text" name="description" class="form-control" placeholder="Lecture Description">
-        </div>
-        <div class="mb-3">
-          <input type="file" name="pdf" class="form-control" accept="application/pdf">
-        </div>
-        <button type="submit" class="btn btn-primary">Add Lecture</button>
-      </form>
-    </div>
-  </div>
-  <% } %>
-
-
-  <!-- Assignments Section -->
-  <div class="card mb-4">
-    <div class="card-header bg-secondary text-white">
-      <h3 class="mb-0">Assignments</h3>
-    </div>
-    <div class="card-body">
-      <% if (course.assignments && course.assignments.length > 0) { %>
-        <ul class="list-group">
-          <% course.assignments.forEach(assignment => { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <strong><%= assignment.title %></strong>
+    <!-- Course Info Card -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body p-4">
+        <div class="row">
+          <div class="col-md-4 mb-3 mb-md-0">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-hash fs-3 text-primary me-3"></i>
               <div>
-                <% if (assignment.pdf_url) { %>
-                  <a href="<%= assignment.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">Download</a>
-                <% } %>
-                <a href="/courses/<%= course.course_id %>/assignments/<%= assignment._id %>/delete" class="btn btn-sm btn-outline-danger">Delete</a>
+                <small class="text-muted d-block">Course ID</small>
+                <strong>
+                  <%= course.course_id %>
+                </strong>
               </div>
-            </li>
-          <% }) %>
-        </ul>
-      <% } else { %>
-        <p class="text-warning">No assignments available for this course.</p>
-      <% } %>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3 mb-md-0">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-award fs-3 text-success me-3"></i>
+              <div>
+                <small class="text-muted d-block">Credits</small>
+                <strong>
+                  <%= course.credits %>
+                </strong>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-diagram-3 fs-3 text-info me-3"></i>
+              <div>
+                <small class="text-muted d-block">Branch</small>
+                <strong>
+                  <%= course.branch %>
+                </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-3">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-person-badge fs-4 text-warning me-3"></i>
+          <div>
+            <small class="text-muted d-block">Professor</small>
+            <strong>
+              <%= course.professor_name %>
+            </strong>
+            <small class="text-muted">(<%= course.professor_email %>)</small>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Lectures Section -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-primary text-white py-3">
+        <h3 class="mb-0">
+          <i class="bi bi-file-earmark-text me-2"></i>Lectures
+        </h3>
+      </div>
+      <div class="card-body">
+        <% if (course.lectures && course.lectures.length> 0) { %>
+          <div class="list-group list-group-flush">
+            <% course.lectures.forEach(lecture=> { %>
+              <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <h5 class="mb-1">
+                      <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>"
+                        class="text-decoration-none">
+                        <%= lecture.title %>
+                      </a>
+                    </h5>
+                    <% if (lecture.description) { %>
+                      <p class="mb-0 text-muted">
+                        <%= lecture.description %>
+                      </p>
+                      <% } %>
+                  </div>
+                  <div class="btn-group">
+                    <% if (lecture.pdf_url) { %>
+                      <a href="<%= lecture.pdf_url %>" class="btn btn-sm btn-outline-primary" target="_blank">
+                        <i class="bi bi-file-pdf me-1"></i>View PDF
+                      </a>
+                      <% } %>
+                        <% if (user && user.role==='admin' ) { %>
+                          <a href="/courses/<%= course.course_id %>/lectures/<%= lecture._id %>/delete"
+                            class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this lecture?')">
+                            <i class="bi bi-trash"></i>
+                          </a>
+                          <% } %>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+          <% } else { %>
+            <div class="alert alert-info mb-0">
+              <i class="bi bi-info-circle me-2"></i>No lectures available for this course yet.
+            </div>
+            <% } %>
+      </div>
+    </div>
+
+    <!-- Add Lecture Form (Admin Only) -->
+    <% if (user && user.role==='admin' ) { %>
+      <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-light">
+          <h4 class="mb-0">
+            <i class="bi bi-plus-circle me-2"></i>Add New Lecture
+          </h4>
+        </div>
+        <div class="card-body">
+          <form action="/courses/<%= course.course_id %>/lectures" method="POST" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="lectureTitle" class="form-label fw-semibold">Lecture Title</label>
+                <input type="text" name="title" id="lectureTitle" class="form-control" placeholder="Enter lecture title"
+                  required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="lecturePdf" class="form-label fw-semibold">Upload PDF</label>
+                <input type="file" name="pdf" id="lecturePdf" class="form-control" accept="application/pdf">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="lectureDescription" class="form-label fw-semibold">Description</label>
+              <textarea name="description" id="lectureDescription" class="form-control" rows="2"
+                placeholder="Enter lecture description (optional)"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-plus-circle me-2"></i>Add Lecture
+            </button>
+          </form>
+        </div>
+      </div>
+      <% } %>
+
+        <!-- Assignments Section -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header bg-success text-white py-3">
+            <h3 class="mb-0">
+              <i class="bi bi-clipboard-check me-2"></i>Assignments
+            </h3>
+          </div>
+          <div class="card-body">
+            <% if (course.assignments && course.assignments.length> 0) { %>
+              <div class="list-group list-group-flush">
+                <% course.assignments.forEach(assignment=> { %>
+                  <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h5 class="mb-1">
+                          <%= assignment.title %>
+                        </h5>
+                        <% if (assignment.description) { %>
+                          <p class="mb-0 text-muted">
+                            <%= assignment.description %>
+                          </p>
+                          <% } %>
+                      </div>
+                      <div class="btn-group">
+                        <% if (assignment.pdf_url) { %>
+                          <a href="<%= assignment.pdf_url %>" class="btn btn-sm btn-outline-success" target="_blank">
+                            <i class="bi bi-download me-1"></i>Download
+                          </a>
+                          <% } %>
+                            <% if (user && user.role==='admin' ) { %>
+                              <a href="/courses/<%= course.course_id %>/assignments/<%= assignment._id %>/delete"
+                                class="btn btn-sm btn-outline-danger"
+                                onclick="return confirm('Delete this assignment?')">
+                                <i class="bi bi-trash"></i>
+                              </a>
+                              <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+              </div>
+              <% } else { %>
+                <div class="alert alert-info mb-0">
+                  <i class="bi bi-info-circle me-2"></i>No assignments available for this course yet.
+                </div>
+                <% } %>
+          </div>
+        </div>
+
+        <!-- Add Assignment Form (Admin Only) -->
+        <% if (user && user.role==='admin' ) { %>
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light">
+              <h4 class="mb-0">
+                <i class="bi bi-plus-circle me-2"></i>Add New Assignment
+              </h4>
+            </div>
+            <div class="card-body">
+              <form action="/courses/<%= course.course_id %>/assignments" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="assignmentTitle" class="form-label fw-semibold">Assignment Title</label>
+                    <input type="text" name="title" id="assignmentTitle" class="form-control"
+                      placeholder="Enter assignment title" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="assignmentPdf" class="form-label fw-semibold">Upload PDF</label>
+                    <input type="file" name="pdf" id="assignmentPdf" class="form-control" accept="application/pdf">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="assignmentDescription" class="form-label fw-semibold">Description</label>
+                  <textarea name="description" id="assignmentDescription" class="form-control" rows="2"
+                    placeholder="Enter assignment description (optional)"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">
+                  <i class="bi bi-plus-circle me-2"></i>Add Assignment
+                </button>
+              </form>
+            </div>
+          </div>
+          <% } %>
   </div>
 
-  <% if (user && user.role === 'admin') { %>
-  <!-- Add Assignment Form -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="mb-0">Add Assignment</h3>
-    </div>
-    <div class="card-body">
-      <form action="/courses/<%= course.course_id %>/assignments" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-          <input type="text" name="title" class="form-control" placeholder="Assignment Title" required>
-        </div>
-        <div class="mb-3">
-          <input type="text" name="description" class="form-control" placeholder="Assignment Description">
-        </div>
-        <div class="mb-3">
-          <input type="file" name="pdf" class="form-control" accept="application/pdf">
-        </div>
-        <button type="submit" class="btn btn-primary">Add Assignment</button>
-      </form>
-    </div>
-  </div>
-</div>
-<% } %>
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer') %>
