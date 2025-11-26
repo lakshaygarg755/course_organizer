@@ -1,31 +1,36 @@
 # Course Organizer
 
-A web-based application to manage and organize university courses, lectures, assignments, and professors. This project allows administrators to manage course content and users to view enrolled courses and materials.
+A modern, responsive web application to manage and organize university courses, lectures, assignments, and professors. Built with Node.js, Express, and MongoDB, featuring a complete UI overhaul using Bootstrap 5 and cloud-based file storage.
 
-## Features
+## 🚀 Features
 
-- **User Authentication**: Secure registration and login system using Passport.js.
-- **Role-Based Access Control**:
-  - **Admin**: Can add, edit, and delete courses, and manage professors.
-  - **User**: Can view available courses, lectures, and assignments.
-- **Course Management**: Organize courses with details like credits, branch, and assigned professor.
-- **Content Delivery**: Upload and manage links to lectures and assignments (PDFs).
-- **Professor Management**: Database of professors linked to courses.
+-   **Modern UI/UX**: Fully responsive design using **Bootstrap 5** with a clean, professional aesthetic.
+-   **User Authentication**: Secure registration and login system using Passport.js.
+-   **Role-Based Access Control**:
+    -   **Admin**: Full control to add/edit/delete courses, manage professors, and manage user roles.
+    -   **User**: View enrolled courses, access lectures, and download assignments.
+-   **Cloud Storage**: Integrated **Cloudinary** for secure and permanent storage of lecture PDFs and assignment files.
+-   **Course Management**: Organize courses with details like credits, branch, and assigned professor.
+-   **Professor Management**: Dedicated admin section to manage professor profiles.
+-   **Mobile Friendly**: Fully responsive navbar and layout optimized for mobile devices.
+-   **Secure Deployment**: Configured for production deployment on **Render** with MongoDB Atlas.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB (using Mongoose for ODM)
-- **Templating**: EJS (Embedded JavaScript templates)
-- **Authentication**: Passport.js (Local Strategy), bcrypt for password hashing
-- **Session Management**: express-session, connect-mongo
+-   **Frontend**: EJS, Bootstrap 5, Bootstrap Icons
+-   **Backend**: Node.js, Express.js
+-   **Database**: MongoDB (Mongoose ODM)
+-   **Storage**: Cloudinary (File Uploads)
+-   **Authentication**: Passport.js (Local Strategy)
+-   **Deployment**: Render (Web Service), MongoDB Atlas (Database)
 
-## Installation
+## 📦 Installation
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) installed.
-- [MongoDB](https://www.mongodb.com/) installed and running locally.
+-   [Node.js](https://nodejs.org/) installed.
+-   [MongoDB](https://www.mongodb.com/) installed (or use MongoDB Atlas).
+-   [Cloudinary](https://cloudinary.com/) account (free tier).
 
 ### Steps
 
@@ -44,42 +49,50 @@ A web-based application to manage and organize university courses, lectures, ass
 
 3.  **Set up Environment Variables:**
 
-    Create a `.env` file in the root directory and add the following:
+    Create a `.env` file in the root directory (copy from `.env.example`):
 
     ```env
     SESSION_SECRET=your_secret_key
+    MONGODB_URI=your_mongodb_connection_string
+    CLOUDINARY_CLOUD_NAME=your_cloud_name
+    CLOUDINARY_API_KEY=your_api_key
+    CLOUDINARY_API_SECRET=your_api_secret
+    NODE_ENV=development
     ```
 
 4.  **Start the application:**
 
     ```bash
     npm start
-    # OR for development with nodemon
+    # OR for development
     npm run dev
     ```
-    *(Note: You may need to install nodemon globally or use `npx nodemon app.js` if not in package.json scripts, though it is listed as a dependency).*
 
 5.  **Access the app:**
 
     Open your browser and go to `http://localhost:80`
 
-## Usage
+## 🚀 Deployment
 
-1.  **Register**: Create a new account.
-2.  **Login**: Log in with your credentials.
-3.  **Dashboard**:
-    - **Admins** will see options to add/edit courses.
-    - **Users** will see the list of courses they can access.
+This project is configured for easy deployment on **Render**.
 
-## Project Structure
+1.  Push your code to GitHub.
+2.  Create a new Web Service on Render connected to your repo.
+3.  Add the environment variables from your `.env` file to Render.
+4.  Deploy!
 
--   `app.js`: Main entry point of the application.
--   `models/`: Mongoose schemas for User, Course, and Professor.
--   `routes/`: Express routes for different functionalities (Auth, Courses, Admin, etc.).
+For detailed instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## 📂 Project Structure
+
+-   `app.js`: Main entry point and configuration.
+-   `models/`: Mongoose schemas (User, Course, Professor).
+-   `routes/`: Express routes (Auth, Courses, Admin, Lectures).
 -   `views/`: EJS templates for the frontend.
--   `middleware/`: Custom middleware (e.g., authentication checks).
--   `public/` or `uploads/`: Static files and uploads.
+-   `config/`: Configuration files (Cloudinary).
+-   `middleware/`: Auth and logging middleware.
+-   `public/`: Static files (favicon, etc.).
 
-## License
+## 📄 License
 
 This project is licensed under the ISC License.
