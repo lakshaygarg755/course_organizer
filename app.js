@@ -24,6 +24,9 @@ const User = require("./models/user");
 // Express App
 const app = express();
 
+// Trust proxy - Required for Render/Heroku (behind reverse proxy)
+app.set('trust proxy', 1);
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
